@@ -1,5 +1,6 @@
 
-this is the one of the stupid  lesson i took
 
-java is cool
-page1 is gonna help us
+this is the one of the stupid  lesson i took.
+java is cool.
+page1 is gonna help us.
+
