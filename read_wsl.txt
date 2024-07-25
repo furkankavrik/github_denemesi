@@ -1,0 +1,1 @@
+               I saved important notes relating to setup of framework in WSL machine.
