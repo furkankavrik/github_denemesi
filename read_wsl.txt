@@ -1,1 +1,3 @@
                I saved important notes relating to setup of framework in WSL machine.
+
+ssh protochol is used to authenticate wsl machine.
