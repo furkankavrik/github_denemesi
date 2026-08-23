@@ -1,0 +1,1 @@
+print("carrental python package is installed")
