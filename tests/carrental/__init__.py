@@ -1,1 +1,1 @@
-print("carrental python package is installed")
+print(f"\n\t*****carrental python package is installed*****")
