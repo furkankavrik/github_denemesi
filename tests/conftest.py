@@ -7,8 +7,3 @@ def yeni_sayfa(autouse = True):#autouse make fixture executed when the code run.
     browser = playwright.chromium.launch()
     page = browser.new_page()
     return  page
-
-
-@pytest.fixture
-def username():
-    return "furkan"
