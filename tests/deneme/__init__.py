@@ -1,0 +1,1 @@
+print(f"\n\t***** deneme package is installed *****")
