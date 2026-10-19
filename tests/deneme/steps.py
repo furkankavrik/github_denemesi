@@ -6,7 +6,7 @@ from pytest_bdd import given, when, then
 # ----------------   carrental_step_defs/test_login.py --------------------
 
 @given('the user is on the login page')
-def on_login_page(yeni_sayfa):
+def on_login_page(yeni_sayfa, docstring):
     """the user in on the login page."""
 
     sayfa = yeni_sayfa
@@ -14,6 +14,8 @@ def on_login_page(yeni_sayfa):
     deger = sayfa.title()
     print(f"\n\n\t********{deger}*******")
     print("\nthe step 1 is executed")
+
+    print(f"\n docstring is: {docstring} \n")
 
     
 @when('the user enters valid credentials')
