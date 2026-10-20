@@ -3,7 +3,7 @@ from pytest_bdd import given, when, then, scenario
 
 @scenario("../carrental_feature/login.feature", 'Succesful Login')#i changed the path of feature file to fix problem.
 def test_succesful_login():
-    print("End of --Succesfull Login-- scenario")
+    print("\n\nEnd of --Succesfull Login-- scenario")
     
     
 # Following step definitons run without problem if you need. But i prefere to expose them via conftest file ;)
