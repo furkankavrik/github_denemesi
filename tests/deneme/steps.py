@@ -15,7 +15,7 @@ def on_login_page(yeni_sayfa, docstring):
     print(f"\n\n\t********{deger}*******")
     print("\nthe step 1 is executed")
 
-    print(f"\n docstring is: {docstring} \n")
+    print(f"\n docstring is: {docstring} \n")# Docstring written in feature file can be used this way as fixture.
 
     
 @when('the user enters valid credentials')
