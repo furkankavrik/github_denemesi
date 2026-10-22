@@ -1,12 +1,35 @@
 from playwright.sync_api import sync_playwright
 import pytest
 from pprint import pprint
+import json
+from pathlib import Path
 
 from tests.deneme.steps import * # important part of framework. Having more module like this is better for organisation.
                                  # You can either create one file or more file to keeps steps.
                                  # And "*" seymbols  means import everything. 
 
 
+@pytest.fixture
+def context(autouse = True):
+    preferences_path = Path("./tests/user_data_directory/Default/Preferences") #This is where we try to configure our browser via
+                                                                               #preferences json file
+    with preferences_path.open("r", encoding="utf-8") as file:
+            preferences = json.load(file)
+            preferences["translate_blocked_languages"] = "tr", "en"
+            # print(json.dumps(preferences, indent=4))
+
+    playwright = sync_playwright().start()
+    browser = playwright.chromium
+    context = browser.launch_persistent_context(
+        user_data_dir="../github_denemesi/tests/user_data_directory",
+        headless=False,
+        no_viewport= True,
+        args=["--start-maximized"]
+        #, "--disable-translate",  "--disable-features=Translate"
+        #  "--disable-features=TranslateToast, TranslateTrigger, LensOverlayTranslateButton, ReadAnythingTranslateEntryPoint"
+        )
+    yield context
+    context.close()
 
 # @pytest.fixture
 # def yeni_sayfa(autouse = True):#autouse make fixture executed when the code run.
@@ -16,18 +39,17 @@ from tests.deneme.steps import * # important part of framework. Having more modu
 #     return  page
 
 @pytest.fixture
-def sayfa(autouse = True):
-    playwright = sync_playwright().start()
-    browser = playwright.chromium.launch_persistent_context(
-        user_data_dir="../github_denemesi/tests/user_data_directory",
-        headless=False,
-        no_viewport= True,
-        args=["--start-maximized"]
-        )
-    context =browser
-    page = context.new_page()
-    return page
+def sayfa(context,autouse = True):
+    page = context.pages # We create many Tabs here
+    for i in page[1:]: # We delete all the Tabs except one of them
+        page[i].close()
+    page_tek = page[0] #We created extra page object here to have only have one Tab in browser.
+    yield page_tek
+    page[0].close() 
+    page_tek.close()
 
+
+ 
 # ----------------------HOOKs for PYTEST-BDD------------------------ WARNING : pytest also has its own hooks.
 
 def pytest_bdd_before_scenario(request, feature, scenario):
