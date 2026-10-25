@@ -11,6 +11,7 @@ from tests.deneme.steps import * # important part of framework. Having more modu
 
 @pytest.fixture
 def context(autouse = True):
+    """Create and return a context for page creation."""
     preferences_path = Path("./tests/user_data_directory/Default/Preferences") #This is where we try to configure our browser via
                                                                                #preferences json file
     with preferences_path.open("r", encoding="utf-8") as file:
@@ -31,15 +32,20 @@ def context(autouse = True):
     yield context
     context.close()
 
-# @pytest.fixture
-# def yeni_sayfa(autouse = True):#autouse make fixture executed when the code run.
-#     playwright = sync_playwright().start()
-#     browser = playwright.chromium.launch()
-#     page = browser.new_page()
-#     return  page
+@pytest.fixture
+def yeni_sayfa(autouse = True):#autouse make fixture executed when the code run.
+    """Create and return a new browser page."""
+    playwright = sync_playwright().start()
+    browser = playwright.chromium.launch(
+        headless = False,
+        args=["--start-maximized"])
+    context = browser.new_context(no_viewport=True)
+    page = context.new_page()
+    return  page
 
 @pytest.fixture
 def sayfa(context,autouse = True):
+    """Create and return a new browser page using context."""
     page = context.pages # We create many Tabs here
     for i in page[1:]: # We delete all the Tabs except one of them
         page[i].close()
