@@ -1,0 +1,17 @@
+#Configure pytest
+[pytest]
+
+# Addding test directory where we use tags for scenarios and features.
+testpaths = ["tests"]
+
+
+# To avoid custom tag warning we have to add them here.
+markers = [
+
+    "bdd_all: means all the scenarios under same feature file",
+    "succesful: means only the succesful sceanrio is run",
+    "bdd_fail: means only the failed scenario is run",
+    "login: means only loign sceanrio is run"
+    ]
+
+
