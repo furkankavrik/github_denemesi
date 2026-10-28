@@ -16,14 +16,14 @@ def context(autouse = True):
                                                                                #preferences json file
     with preferences_path.open("r", encoding="utf-8") as file:
             preferences = json.load(file)
-            preferences["translate_blocked_languages"] = "tr", "en"
+            # preferences["translate_blocked_languages"] = "tr", "en"
             # print(json.dumps(preferences, indent=4))
 
     playwright = sync_playwright().start()
     browser = playwright.chromium
     context = browser.launch_persistent_context(
         user_data_dir="../github_denemesi/tests/user_data_directory",
-        headless=False,
+        headless=True,
         no_viewport= True,
         args=["--start-maximized"]
         #, "--disable-translate",  "--disable-features=Translate"
@@ -55,7 +55,7 @@ def sayfa(context,autouse = True):
     page_tek.close()
 
 
- 
+
 # ----------------------HOOKs for PYTEST-BDD------------------------ WARNING : pytest also has its own hooks.
 
 def pytest_bdd_before_scenario(request, feature, scenario):
@@ -71,7 +71,8 @@ def pytest_bdd_after_scenario(request, feature, scenario):
 
 def pytest_bdd_before_step(request, feature, scenario, step, step_func):
     # print(f"\nbefore_step is active for {step}")
-    print(step)
+    print("\n" + scenario.name + " ---> ", end="")
+    print (step, end="") 
     # request.getfixturevalue("sayfa").screenshot(path="../github_denemesi/tests/screenshot.png", full_page = True)
 
 def pytest_bdd_before_step_call(request, feature, scenario, step, step_func, step_func_args):
@@ -81,7 +82,7 @@ def pytest_bdd_before_step_call(request, feature, scenario, step, step_func, ste
 
 def pytest_bdd_after_step(request, feature, scenario, step, step_func, step_func_args):
     # print(f"\nafter_step is active for {step_func}")
-    request.getfixturevalue("sayfa").screenshot(path="../github_denemesi/tests/screenshot.png", full_page = True)
+    # request.getfixturevalue("sayfa").screenshot(path="../github_denemesi/tests/screenshot.png", full_page = True)
     pass
 
 def pytest_bdd_step_error(request, feature, scenario, step, step_func, step_func_args, exception):
