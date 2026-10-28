@@ -1,9 +1,11 @@
-from pytest_bdd import given, when, then, scenario
+from pytest_bdd import given, when, then, scenario, scenarios
+
+scenarios("../carrental_feature/login.feature") # This metis used for binding multi scenarios in a feature file
 
 
-@scenario("../carrental_feature/login.feature", 'Succesful Login')#i changed the path of feature file to fix problem.
-def test_succesful_login():
-    print("\n\nEnd of --Succesfull Login-- scenario")
+# @scenario("../carrental_feature/login.feature", 'Succesful Login')#i changed the path of feature file to fix problem.
+# def test_succesful_login():
+#     print("\n\nEnd of --Succesfull Login-- scenario")
     
     
 # Following step definitons run without problem if you need. But i prefere to expose them via conftest file ;)
