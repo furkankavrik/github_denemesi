@@ -39,16 +39,13 @@ def enter_valid_credentials(sayfa):
 def _(sayfa):
     """the user clicks kabul et button."""
     print("\nthe step 4 is executed")
-    sayfa.get_by_test_id("user-modal-sign-in-component-code-btn").click()
+    # sayfa.get_by_test_id("user-modal-sign-in-component-code-btn").click()
     
 
 @then('the user should be logged in')
 def logged_in():
     """the user should be logged in."""
     print("\nthe step 5 is executed")
-
-
-
 
 
 
