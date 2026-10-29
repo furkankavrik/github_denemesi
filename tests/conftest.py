@@ -54,12 +54,12 @@ def browser(playwright: Playwright, context_config : list, scope="session", auto
 def yeni_sayfa(playwright:Playwright, autouse = True):#autouse make fixture executed when the code run.
     """Create and return a new browser page."""
     browser_set = playwright.chromium
-    browser = browser_set.launch(
-        headless = False,
-        args=["--start-maximized"])
+    browser = browser_set.launch(headless = False, args=["--start-maximized"])
     context = browser.new_context(no_viewport=True)
     page = context.new_page()
-    return  page
+    yield  page
+    page.close()
+    
 
 @pytest.fixture
 def sayfa(browser,scope ="session", autouse = True):
