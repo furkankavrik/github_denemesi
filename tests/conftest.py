@@ -1,4 +1,6 @@
-from playwright.sync_api import sync_playwright
+from playwright.sync_api import sync_playwright, Playwright
+# from playwright.async_api import async_playwright, Playwright
+import asyncio
 import pytest
 from pprint import pprint
 import json
@@ -10,33 +12,49 @@ from tests.deneme.steps import * # important part of framework. Having more modu
 
 
 @pytest.fixture
-def context(autouse = True):
+def context_config(scope ="session", autouse = True):
     """Create and return a context for page creation."""
     preferences_path = Path("./tests/user_data_directory/Default/Preferences") #This is where we try to configure our browser via
                                                                                #preferences json file
-    with preferences_path.open("r", encoding="utf-8") as file:
-            preferences = json.load(file)
+    # with preferences_path.open("r", encoding="utf-8") as file: # In case you need to change browser settings.
+    #         preferences = json.load(file)
             # preferences["translate_blocked_languages"] = "tr", "en"
             # print(json.dumps(preferences, indent=4))
 
-    playwright = sync_playwright().start()
-    browser = playwright.chromium
-    context = browser.launch_persistent_context(
-        user_data_dir="../github_denemesi/tests/user_data_directory",
-        headless=True,
-        no_viewport= True,
-        args=["--start-maximized"]
-        #, "--disable-translate",  "--disable-features=Translate"
-        #  "--disable-features=TranslateToast, TranslateTrigger, LensOverlayTranslateButton, ReadAnythingTranslateEntryPoint"
-        )
-    yield context
-    context.close()
+    user_data_dir="../github_denemesi/tests/user_data_directory" 
+    options = { "headless" : True, 
+                "no_viewport": True, 
+                "args":["--start-maximized"] 
+              }
+    #, "--disable-translate",  "--disable-features=Translate"
+    #  "--disable-features=TranslateToast, TranslateTrigger, LensOverlayTranslateButton, ReadAnythingTranslateEntryPoint"
+
+    return [user_data_dir , options] # We return the configuration for context of browser here.
+
 
 @pytest.fixture
-def yeni_sayfa(autouse = True):#autouse make fixture executed when the code run.
+def browser(playwright: Playwright, context_config : list, scope="session", autouse = True):
+    """Create and return a browser"""
+    browser_set = playwright.chromium
+    browser = browser_set.launch_persistent_context(context_config[0], **context_config[1])
+    yield browser
+    browser.close()
+
+# @pytest.fixture # SPARE BROWSER SETUP IN CASE OF  ANY ERROR ARISE
+# def browser(context_config : list, scope="session", autouse = True):
+#     """Create and return a browser"""
+#     playwright =sync_playwright().start()
+#     browser_set = playwright.chromium
+#     browser = browser_set.launch_persistent_context(context_config[0], **context_config[1])
+#     yield browser
+#     browser.close()
+#     playwright.stop()
+
+@pytest.fixture
+def yeni_sayfa(playwright:Playwright, autouse = True):#autouse make fixture executed when the code run.
     """Create and return a new browser page."""
-    playwright = sync_playwright().start()
-    browser = playwright.chromium.launch(
+    browser_set = playwright.chromium
+    browser = browser_set.launch(
         headless = False,
         args=["--start-maximized"])
     context = browser.new_context(no_viewport=True)
@@ -44,15 +62,16 @@ def yeni_sayfa(autouse = True):#autouse make fixture executed when the code run.
     return  page
 
 @pytest.fixture
-def sayfa(context,autouse = True):
+def sayfa(browser,scope ="session", autouse = True):
     """Create and return a new browser page using context."""
-    page = context.pages # We create many Tabs here
+    page = browser.pages # We create many Tabs here
     for i in page[1:]: # We delete all the Tabs except one of them
         page[i].close()
-    page_tek = page[0] #We created extra page object here to have only have one Tab in browser.
-    yield page_tek
-    page[0].close() 
-    page_tek.close()
+    yield page[0]
+    page[0].close()
+    # page = browser.new_page()
+    # yield page
+    # page.close()
 
 
 
