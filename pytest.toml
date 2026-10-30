@@ -11,7 +11,11 @@ markers = [
     "bdd_all: means all the scenarios under same feature file",
     "succesful: means only the succesful sceanrio is run",
     "bdd_fail: means only the failed scenario is run",
-    "login: means only loign sceanrio is run"
+    "login: means only loign sceanrio is run",
+    "all_arguments: means all the scenario tests under Arguments feature",
+    "bdd_outline: trigger outlined scenario",
+    "small_numbers: triggers the  test for the values in first example",
+    "big_numbers: triggers the test for the values in second example"
     ]
 
 
